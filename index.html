@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
-    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
 
 </head>
 <body>
@@ -45,11 +45,14 @@
             
             <div class=" boxContent">
                 <div class=" halfL">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim vero ad sequi sunt velit iste ducimus, quaerat labore, voluptas tempora aut quia repudiandae odio nisi vitae nesciunt deserunt ullam id. </p>
+                    <p align="justify">
+        Nowadays, technology allows us to record at high speeds different physical phenomena, like free fall, the movement of a sprint, the trajectory of the planets, and the activity of the neurons. Scientists have modeled these dynamics into equations used daily to make predictions. Video predictions are a hot topic in computer vision since they help track systems, decision-making, etc. However, when those videos present physical behavior, we don’t know how to integrate this knowledge to improve and generalize our predictions. Therefore in this project, we aim to study how we can induce physical priors into the model to characterize the event and make a video prediction
+                    </p>
                 
                 </div>
                 <div class=" halfR">
-                    
+                    <img id="neuronImg" style="position: absolute; padding-left: 100px; margin-top: -50px; width: 300px; height: auto; " src="./Media/neuronAn.png" alt="Italian Trulli">
+            
                 </div>
                 
             
@@ -58,39 +61,110 @@
         </div>
 
         <div class="row" style="margin-top: 1cm; height: 60%;">
+                <div class="col-6 ">
+            <div class="borderBlue twoColR">
+                <h4 class="boxTitles">Study case</h4>
+            <div class=" boxContent">
+                <p align="justify" >
+                    To approach this problem, we set the microscopy problem to identify the dynamic of the brain's neurons for high-temporal resolution videos.<br>
+                    <br>
+                    <b>Neuron dynamics on time</b> <br> 
+
+Neurons activity has been widely studied to characterize and find the inner mechanisms of the cell that explain the common patterns they exhibit. In particular, the Hodgkin & Huxley model is one of the most popular models since it accurately describes the interaction of the cell’s ion channels. This relation is described in the following differential equation:
+                   
+                </p>
+
+                $$ {I = C_m \frac{dV_m}{dt} + g_K (V_m - V_K) + g_{Na} (V_m - V_{Na}) + g_l (V_m - V_l) } $$
+
+                <div class="divfollowed">
+               
+                    <div id="chartContainer" style="height: 200px; width: 300px;"></div>
+                    <img id="neuronImg" class="relativeImg " src="./Media/NeuronNoBg2.png" alt="Italian Trulli">
+                </div>
+                
+                <p align="justify" >
+                    So we would like to extract the parameters \(g_n\) that describe the dynamics from the video and then use them for video prediction. Therefore we can find helpful information for neuroscientists and study the evolution of the brain's neuron networks. 
+                </p>
+                <!--
+                <iframe width="150" height="130" 
+                src="https://www.youtube.com/embed/TF8THY5spmo?autoplay=1" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                
+                allowfullscreen></iframe>
+                -->
+            </div>
+          </div>
+         
+        </div>
+
           <div class="col-6 ">
 
             <div class="borderBlue twoColL">
                 <h4 class="boxTitles">Methods</h4>
             <div class=" boxContent">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim vero ad sequi sunt velit iste ducimus, quaerat labore, voluptas tempora aut quia repudiandae odio nisi vitae nesciunt deserunt ullam id. </p>
-               
+
+                <h5 class="">Architecture</h5>
+
+                <div style="padding-left: 16px;">
+
+                <p align="justify" >
+                To achieve our goal, we propose to use an autoencoder architecture with an intermediate step that consists of the physical model to make the prediction.
+                </p> <br>
+                <p align="justify" >
+<b>Encoder:</b> It is trained to predict the time-dependent parameters of the equation.
+</p> 
+<p align="justify" >
+    <b>Predictor:</b>   is our mathematical model. It contains learnable parameters that correspond to the constant parameters of our equation.
+</p>
+<p align="justify" >
+<b>Decoder:</b>  will be trained to transform the time-dependent values to recover the image that represents the corresponding dynamics 
+</p> <br>
+
+</div>
+
+            <div class="divfollowed">
+                        
+                <img id="AE" style="width: 700px; height: auto; margin-left: -50px; " src="./Media/AE.jpg" alt="Italian Trulli">
+            </div>
+
+            <h5 class="">Loss Function</h5>
+
+            <div style="padding-left: 16px;">
+                <p align="justify" ></p>
+                In the proposed method, the cost function plays a key role since it needs to optimize the reconstruction but also needs to validate the predicted dynamics, as follows:
+            </p>
+                <br>
+                <b>L1:</b>  Validates the encoded input can be reconstructed. <br>
+                    <b>L2:</b>  Validates the predicted state can be reconstructed. <br>
+                        <b>L3:</b>  Makes sure the predicted space satisfies the imposed physics. <br>
+                            <b>L4:</b>  Allow that the prediction of the dynamics in different times is consisted with the model
+            </div>
+
+            $$ { Loss = \alpha (L1+L2) + \beta (L3) + \beta (L4) } $$
+
+
             </div>
 
             </div>
             
              
           </div>
-          <div class="col-6 ">
-            <div class="borderBlue twoColR">
-                <h4 class="boxTitles">Experiments</h4>
-            <div class=" boxContent">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim vero ad sequi sunt velit iste ducimus, quaerat labore, voluptas tempora aut quia repudiandae odio nisi vitae nesciunt deserunt ullam id. </p>
-               
-                <div id="chartContainer" style="height: 50%; width: 50%;"></div>
-                <img class="relativeImg " src="./Media/NeuronNoBg2.png" alt="Italian Trulli">
-            </div>
-          </div>
-         
-        </div>
+
+          
+      
       </div>
 
       <div class="row">
-        <div  class="col justify-content-end">
-            <img class="float-right " style="width : 300px; height: auto;" src="./Media/TUDelft_logo_rgb.png" alt="Italian Trulli">
+        <div  class="col justify-content-end" style="padding-left: 200px;">
+            <img class="footer" style="width : 200px; height: auto;" src="./Media/TUDelft_logo_rgb.png" alt="Italian Trulli">
+            <img class="footer" style="width : 100px; height: auto;" src="./Media/qr.png" alt="Italian Trulli">
+        
         </div>
 
       </div>
+
+      
 
 
       
@@ -116,15 +190,15 @@
 
             if( nightMode ){
                 document.querySelector('#mode').innerHTML = '<i class="fa-sharp fa-regular fa-moon"></i>';
-                document.querySelector('#mode').style.color = '#FAFAFA'
-                document.body.style.color ='#FAFAFA'
+                document.querySelector('#mode').style.color = '#FFFFFF'
+                document.body.style.color ='#FFFFFF'
                 changeColor('#121212');
             }
             else{
                 document.querySelector('#mode').innerHTML = '<i class="fa-regular fa-sun"></i>';
                 document.querySelector('#mode').style.color = '#121212'
                 document.body.style.color ='#121212'
-                changeColor('#FAFAFA');
+                changeColor('#FFFFFF');
             }
 
             loadPlot()
